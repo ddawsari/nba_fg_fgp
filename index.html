@@ -1,0 +1,354 @@
+
+<html>
+    <head>
+        <style>
+            #chart-area svg {
+	margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: #fff;
+}
+
+#slider-wrapper {
+  display: inline-block;
+  width: 50%;
+  margin: -3px 10px;
+}
+.dot.active {
+  fill: #f8ff00;
+}
+        </style>
+            <link rel="stylesheet" href="https://rawgithub.com/Caged/d3-tip/master/examples/example-styles.css" media="screen" title="no title" charset="utf-8">
+            <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css" media="screen" title="no title" charset="utf-8">
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+
+                <!-- <style src="https://rawgithub.com/Caged/d3-tip/master/examples/example-styles.css"></style> -->
+                <!-- <style src="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css"></style> -->
+                <!-- <style src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></style> -->
+
+        
+        <script src="https://d3js.org/d3.v5.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+    </head>
+    <body>
+<nav class="navbar navbar-default">
+        <div class="container">
+          <span class="navbar-brand">Gapminder</span>
+        </div>
+      </nav>
+      
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-6 col-sm-9">
+            <button id="play-button" class="btn btn-primary">Play</button>
+            <button id="reset-button" class="btn btn-default">Reset</button>
+            <div id="slider-wrapper">
+              <div id="date-slider"></div>
+            </div>
+          </div>
+          <div class="col-xs-6 col-sm-3">
+            <select id="position-select" class="form-control">
+              <option selected value="all">All</option>
+              <option value="PG">PG</option>
+              <option value="PF">PF</option>
+              <option value="SG">SG</option>
+              <option value="C">C</option>
+              <option value="SF">SF</option>
+              <!-- <option value="SG-SF">SG-SF</option>
+              <option value="SG-PG">SG-PG</option>
+              <option value="PG-SG">PG-SG</option>
+              <option value="PF-C">PF-C</option>
+              <option value="PF-SF">PF-SF</option>
+              <option value="SF-SG">SF-SG</option>
+              <option value="C-PF">C-PF</option>
+              <option value="SG-PF">SG-PF</option>
+              <option value="SF-PF">SF-PF</option>
+              <option value="PG-SF">PG-SF</option> -->
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div id="chart-area"></div>
+          </div>
+        </div>
+        <div class="row">
+          
+        </div>
+      </div>
+      <script>
+          /**
+ * d3.tip
+ * Copyright (c) 2013-2017 Justin Palmer
+ *
+ * Tooltips for d3.js SVG visualizations
+ */
+!function(t,e){if("function"==typeof define&&define.amd)define(["d3-collection","d3-selection"],e);else if("object"==typeof module&&module.exports){var n=require("d3-collection"),r=require("d3-selection");module.exports=e(n,r)}else{var o=t.d3;t.d3.tip=e(o,o)}}(window,function(l,v){return function(){var u=function(){return"n"},a=function(){return[0,0]},c=function(){return" "},p=document.body,n=t(),r=null,s=null,y=null;function d(t){var e;e=t.node(),(r=e?"svg"===e.tagName.toLowerCase()?e:e.ownerSVGElement:null)&&(s=r.createSVGPoint(),p.appendChild(n))}d.show=function(){var t=Array.prototype.slice.call(arguments);t[t.length-1]instanceof SVGElement&&(y=t.pop());var e,n=c.apply(this,t),r=a.apply(this,t),o=u.apply(this,t),l=x(),i=h.length,f=document.documentElement.scrollTop||p.scrollTop,s=document.documentElement.scrollLeft||p.scrollLeft;for(l.html(n).style("opacity",1).style("pointer-events","all");i--;)l.classed(h[i],!1);return e=m.get(o).apply(this),l.classed(o,!0).style("top",e.top+r[0]+f+"px").style("left",e.left+r[1]+s+"px"),d},d.hide=function(){return x().style("opacity",0).style("pointer-events","none"),d},d.attr=function(t,e){if(arguments.length<2&&"string"==typeof t)return x().attr(t);var n=Array.prototype.slice.call(arguments);return v.selection.prototype.attr.apply(x(),n),d},d.style=function(t,e){if(arguments.length<2&&"string"==typeof t)return x().style(t);var n=Array.prototype.slice.call(arguments);return v.selection.prototype.style.apply(x(),n),d},d.direction=function(t){return arguments.length?(u=null==t?t:o(t),d):u},d.offset=function(t){return arguments.length?(a=null==t?t:o(t),d):a},d.html=function(t){return arguments.length?(c=null==t?t:o(t),d):c},d.rootElement=function(t){return arguments.length?(p=null==t?t:o(t),d):p},d.destroy=function(){return n&&(x().remove(),n=null),d};var m=l.map({n:function(){var t=e();return{top:t.n.y-n.offsetHeight,left:t.n.x-n.offsetWidth/2}},s:function(){var t=e();return{top:t.s.y,left:t.s.x-n.offsetWidth/2}},e:function(){var t=e();return{top:t.e.y-n.offsetHeight/2,left:t.e.x}},w:function(){var t=e();return{top:t.w.y-n.offsetHeight/2,left:t.w.x-n.offsetWidth}},nw:function(){var t=e();return{top:t.nw.y-n.offsetHeight,left:t.nw.x-n.offsetWidth}},ne:function(){var t=e();return{top:t.ne.y-n.offsetHeight,left:t.ne.x}},sw:function(){var t=e();return{top:t.sw.y,left:t.sw.x-n.offsetWidth}},se:function(){var t=e();return{top:t.se.y,left:t.se.x}}}),h=m.keys();function t(){var t=v.select(document.createElement("div"));return t.style("position","absolute").style("top",0).style("opacity",0).style("pointer-events","none").style("box-sizing","border-box"),t.node()}function x(){return null==n&&(n=t(),p.appendChild(n)),v.select(n)}function e(){for(var t=y||v.event.target;null==t.getScreenCTM&&null==t.parentNode;)t=t.parentNode;var e={},n=t.getScreenCTM(),r=t.getBBox(),o=r.width,l=r.height,i=r.x,f=r.y;return s.x=i,s.y=f,e.nw=s.matrixTransform(n),s.x+=o,e.ne=s.matrixTransform(n),s.y+=l,e.se=s.matrixTransform(n),s.x-=o,e.sw=s.matrixTransform(n),s.y-=l/2,e.w=s.matrixTransform(n),s.x+=o,e.e=s.matrixTransform(n),s.x-=o/2,s.y-=l/2,e.n=s.matrixTransform(n),s.y+=l,e.s=s.matrixTransform(n),e}function o(t){return"function"==typeof t?t:function(){return t}}return d}});
+
+
+/**
+ * Built this as a coding challenge in Adam Janes' Udemy course
+ * https://www.udemy.com/masteringd3js
+ */
+const dataUrl = 'https://raw.githubusercontent.com/adamjanes/udemy-d3/master/05/5.10.1/data/data.json'
+
+const config = {
+  chart: {
+    width: 600,
+    height: 300,
+  },
+  margin: {
+    left: 120,
+    right: 50,
+    top: 50,
+    bottom: 100,
+  },
+  intervalDuration: 1000,
+}
+
+const chartBounds = {
+  width: config.chart.width + config.margin.left + config.margin.right,
+  height: config.chart.height + config.margin.top + config.margin.bottom,
+}
+  
+const root = d3
+  .select('#chart-area')
+  .append('svg')
+    .attr('width', chartBounds.width)
+    .attr('height', chartBounds.height)
+    .attr('viewBox', `0 0 ${chartBounds.width} ${chartBounds.height}`)
+  .append('g')
+    .attr('transform', `translate(${config.margin.left}, ${config.margin.top})`)
+
+const scaleX = d3
+  .scaleLinear()
+  .domain([21, 978])
+  .range([0, config.chart.width])
+
+const scaleY = d3
+  .scaleLinear()
+  .domain([0.282, 0.736])
+  .range([config.chart.height, 0])
+
+const area = d3
+  .scaleLinear()
+  .range([25 * Math.PI, 200 * Math.PI])
+  .domain([0, 500]);
+
+const positions = ['PG', 'PF', 'SG', 'C', 'SF'];
+const positionColors = d3.schemeCategory10
+const scaleColors = d3
+  .scaleOrdinal(positionColors)
+  .domain(positions)
+
+const xAxisCreator = d3
+  .axisBottom(scaleX)
+  .tickValues([0, 500, 1000])
+  .tickFormat(d3.format(',.0f'))
+
+const yAxisCreator = d3
+  .axisLeft(scaleY)
+  .tickFormat(v => +v)
+  
+const xAxisGroup = root
+  .append('g')
+  .attr('transform', `translate(0, ${config.chart.height})`)
+  .call(xAxisCreator)
+
+const yAxisGroup = root
+  .append('g')
+  .call(yAxisCreator)
+
+const xLabel = root
+  .append('text')
+    .attr('x', config.chart.width / 2)
+    .attr('y', config.margin.top + config.chart.height)
+    .attr('font-size', '20px')
+    .attr('font-weight', 'bold')
+    .attr('text-anchor', 'middle')
+    .text('FG')
+
+const yLabel = root
+  .append('text')
+    .attr('x', -config.chart.height / 2)
+    .attr('y', -config.margin.left / 2)
+    .attr('font-size', '20px')
+    .attr('font-weight', 'bold')
+    .attr('transform', 'rotate(-90)')
+    .attr('text-anchor', 'middle')
+    .text('Field Goal Percentage')
+
+const yearLabel = root
+  .append('text')
+    .attr('x', config.chart.width)
+    .attr('y', config.chart.height - 12)
+    .attr('font-size', '20px')
+    .attr('font-weight', 'bold')
+    .attr('text-anchor', 'end')
+    .attr('fill', 'grey')
+    .text('aaaa')
+
+const legendPos = {
+  x: config.chart.width - 10,
+  y: config.chart.height - 125,
+}
+const legend = root
+  .append('g')
+    .attr('transform', `translate(${legendPos.x}, ${legendPos.y})`)
+
+positions.forEach((position, i) => {
+  const legendRow = legend
+    .append('g')
+      .attr('transform', `translate(0, ${i * 20})`)
+  
+  legendRow
+    .append('rect')
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('fill', positionColors[i])
+  
+  legendRow
+    .append('text')
+      .attr('x', -10)
+      .attr('y', 10)
+      .attr('text-anchor', 'end')
+      .style('text-transform', 'capitalize')
+      .text(position)
+})
+
+const tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .html(d => {
+    return (`
+<strong>Player</strong> <span style='color: red'>${d.Player}</span><br>
+<strong>Team</strong> <span style='color: red'>${d.Team}</span><br>
+<strong>Field Goal Percentage</strong> <span style='color: red'>${d3.format('.0%')(d.fg_percentage)}</span><br>
+<strong>Field Goal</strong> <span style='color: red'>${d.field_goal}</span><br>
+<strong>Games Played</strong> <span style='color: red'>${d3.format(',.0f')(d.GamesPlayed)}</span><br>
+`)
+             })
+root.call(tip)
+
+const playBtn = d3.select('#play-button')
+const resetBtn = d3.select('#reset-button')
+const positionSelect = d3.select('#position-select')
+const slider = $('#date-slider')
+
+let time = 0
+let interval = null
+d3.json("data/data.json").then(rawData => {
+
+  const data = rawData.map(dataSet => {
+    return {
+      ...dataSet,
+      players: dataSet.Players
+        .filter(player => player.GamesPlayed && player.FG && player.FGP)  
+        .map(player => ({
+          ...player,
+          field_goal: +player.FG,
+          fg_percentage: +player.FGP,
+        }))
+    }
+  })
+  const getNext = () => data[time++ % data.length]
+  const step = () => update(getNext())
+
+  playBtn.on('click', () => {
+    if (playBtn.text() === 'Play') {
+      playBtn.text('Pause')
+      interval = setInterval(step, config.intervalDuration)
+    } else {
+      playBtn.text('Play')
+      clearInterval(interval)
+    }
+  })
+  
+  resetBtn.on('click', () => {
+    time = 0
+    playBtn.text('Play')
+    clearInterval(interval)
+    update(data[time])
+  })
+  
+  positionSelect.on('change', () => {
+    update(data[time])
+  })
+
+  slider.slider({
+    max: data.length - 1,
+    min: 0,
+    step: 1,
+    slide: (event, ui) => {
+      time = ui.value
+      update(data[time])
+    }
+  })
+  
+  step()
+  // circles = root.selectAll('circle')
+//   var svg = d3.selectAll('circle');
+//   svg.on("click", datum => {
+//     //var mouse = d3.mouse(this);
+//     console.log(datum.Player);
+//     highlightData(datum.Player.replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '').replace(/\s+/g, '-').toLowerCase());
+// });
+})
+
+function update(dataSet) {
+  yearLabel.text(dataSet.Year)
+  
+  const selectedPosition = positionSelect.property('value')
+  const players = dataSet.players.filter(player => {
+    return selectedPosition === 'all' || selectedPosition === player.Pos
+  })
+  
+  const circles = root.selectAll('circle').data(players, d => d.Player)
+  
+  circles
+    .exit()
+      .attr('r', 0)
+      .attr('opacity', 0)
+    .remove()
+  
+  circles
+    .enter()
+      .append('circle')
+        // .attr("class", function(d) { return (d.Player.replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '').replace(/\s+/g, '-').toLowerCase()) + " dot"; }) // <--- See this line
+        .attr('cx', d => scaleX(d.field_goal))
+        .attr('cy', d => scaleY(d.fg_percentage))
+        .attr('opacity', 0)
+        .attr('stroke', '#333')
+        .attr('stroke-width', 1)
+        .on('mouseover', tip.show)
+        .on('mouseout', tip.hide)
+    .merge(circles)
+      .transition()
+        .duration(config.intervalDuration)
+        .ease(d3.easeLinear)
+        .attr('opacity', 1)
+        .attr('cx', d => scaleX(d.field_goal))
+        .attr('cy', d => scaleY(d.fg_percentage))
+        .attr('r', d => Math.sqrt(area(d.GamesPlayed) / Math.PI))
+        .attr('fill', d => scaleColors(d.Pos))
+        // .attr('fill', d => (d.Player == "Kobe Bryant")? '#9467BD' : 'grey')
+
+  
+  const yearsCount = slider.slider('option', 'max');
+  slider.slider('value', time % yearsCount)
+}
+var highlightData = function(player){
+  // remove any highlights
+  d3.selectAll('.dot').classed('active', false);
+  d3.select('.' + player).classed('active',true);
+}
+
+</script>
+    </body>
+    </html>
